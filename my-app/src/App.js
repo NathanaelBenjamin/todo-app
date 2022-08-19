@@ -4,7 +4,11 @@ const App = () => {
 
   const [ task, setTasks ] = useState("");
   const [ listOfTasks, setListOfTasks ] = useState([]);
-  const [numberOfCompletedTasks, setNumberOfCompletedTasks] = useState([]);
+  const [ numberOfCompletedTasks, setNumberOfCompletedTasks ] = useState([]);
+
+  useEffect(() => {
+    localStorage.setItem("listOfTasks", JSON.stringify(listOfTasks));
+  }, [listOfTasks]);
 
   useEffect(() => {
     const listOfTasks = JSON.parse(localStorage.getItem("listOfTasks"));
@@ -14,10 +18,7 @@ const App = () => {
     }
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem("listOfTasks", JSON.stringify(listOfTasks));
-  }, [listOfTasks]);
-
+  
   const addTask = (event) => {
     event.preventDefault();
     if(task && !listOfTasks.includes(task)){

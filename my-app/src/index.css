@@ -4,8 +4,7 @@
 
 .container{
     min-height: 100vh;
-    min-width: 100%;
-    overflow: scroll;
+    min-width: 100%;  
 }
 
 .done{
