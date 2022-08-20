@@ -1,23 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 
 const App = () => {
 
   const [ task, setTasks ] = useState("");
-  const [ listOfTasks, setListOfTasks ] = useState([]);
+  const [ listOfTasks, setListOfTasks ] = useState(() => {
+    const savedItems = JSON.parse(localStorage.getItem("listOfTasks"));
+    return savedItems || []; 
+  });
   const [ numberOfCompletedTasks, setNumberOfCompletedTasks ] = useState([]);
-
-  useEffect(() => {
-    const listOfTasks = JSON.parse(localStorage.getItem("listOfTasks"));
-
-    if(listOfTasks){
-      setListOfTasks(listOfTasks);
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("listOfTasks", JSON.stringify(listOfTasks));
-  }, [listOfTasks]);
-
   
   const addTask = (event) => {
     event.preventDefault();
@@ -27,12 +17,17 @@ const App = () => {
     }
   }
 
+  useEffect(() => {
+    localStorage.setItem("listOfTasks", JSON.stringify(listOfTasks));
+  }, [listOfTasks]);
+ 
   const handleDelete = (item) => {
     listOfTasks && setListOfTasks(prev => {
       return prev.filter(element => {
         return element !== item;
       });
     });
+    localStorage.setItem("listOfTasks", JSON.stringify(listOfTasks));
   }
 
   const handleDone = ({event, item}) => {
@@ -123,11 +118,5 @@ const App = () => {
     </div>
   )
 }
-
-// response ? response.map(item => {
-//   return <div>
-//     <li>{item}</li>
-//   </div>
-// }) :
 
 export default App;
